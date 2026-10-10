@@ -1,7 +1,7 @@
 {
   "name": "inquire-law-desktop",
   "productName": "Inquire Law",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Inquire Law: a knowledge console for law school that maps each subject as a skill tree.",
   "author": "Wolfie's Coven <devon@ashleyhoffmann.com>",
   "license": "UNLICENSED",
@@ -32,7 +32,7 @@
   "build": {
     "appId": "com.wolfiescoven.inquirelaw",
     "productName": "Inquire Law",
-    "copyright": "Copyright \u00a9 2026 Wolfie's Coven",
+    "copyright": "Copyright © 2026 Wolfie's Coven",
     "directories": {
       "output": "dist",
       "buildResources": "build"
