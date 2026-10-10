@@ -1,0 +1,122 @@
+/* Intro / sign-in screen (web/src/intro.js). Same look as the app: void black, cyan accent, Saira caps, clipped corners.
+   Sequence (classes on #intro): is-bg → is-logo → is-form. Everything is skipped for reduced motion or a click/key press. */
+.inqi{position:fixed;inset:0;z-index:1000;background:#03060B;color:var(--text);overflow:hidden;display:grid;place-items:center;
+  opacity:1;transition:opacity .9s ease}
+.inqi.is-leaving{opacity:0;pointer-events:none}
+.inqi[hidden]{display:none!important}
+
+/* background world: clean plate (or video) + neuron sparks, all drifting together */
+.inqi-world{position:absolute;inset:-3%;transform-origin:50% 45%;opacity:0;transition:opacity 2.6s ease 0.2s;
+  animation:intro-drift 46s ease-in-out infinite alternate}
+.inqi.is-bg .inqi-world{opacity:1}
+.inqi-plate,.inqi-video,.inqi-fx{position:absolute;inset:0;width:100%;height:100%}
+.inqi-plate{background:#050a14 url("intro/inq-intro-clean.jpg") center/cover no-repeat}
+.inqi-video{object-fit:cover;opacity:0;transition:opacity 1.6s ease}
+.inqi.has-video .inqi-video{opacity:1}
+.inqi-fx{pointer-events:none}
+.inqi.has-video .inqi-fx{display:none}
+@keyframes intro-drift{from{transform:scale(1.02) translate3d(-.6%,.3%,0)}to{transform:scale(1.08) translate3d(.8%,-.5%,0)}}
+.inqi-shade{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 55% at 50% 48%,rgba(3,6,11,.55),transparent 70%),radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(3,6,11,.7))}
+
+/* centre column: logo, then the form */
+.inqi-stage{position:relative;display:flex;flex-direction:column;align-items:center;gap:clamp(14px,3.4vh,30px);width:min(420px,calc(100% - 32px));
+  padding:16px 0;max-height:100%}
+.inqi-logo{display:block;height:min(34vh,320px);width:auto;max-width:78vw;mix-blend-mode:screen;opacity:0;transform:scale(.97);filter:blur(6px);
+  transition:opacity 3.4s ease,transform 4.2s cubic-bezier(.2,.7,.2,1),filter 3.4s ease}
+.inqi.is-logo .inqi-logo{opacity:1;transform:none;filter:none}
+/* Inquire Law: "LAW" under the Inquire lockup until Inquire Law has its own logo */
+.inqi-brand{display:flex;flex-direction:column;align-items:center}
+.inqi-sub{margin-top:6px;font:600 clamp(14px,2.4vh,22px)/1 "Saira Semi Condensed",sans-serif;letter-spacing:.9em;padding-left:.9em;text-transform:uppercase;
+  color:#cfd8e6;text-shadow:0 0 14px rgba(150,190,255,.45);opacity:0;filter:blur(6px);transition:opacity 3.4s ease 1.2s,filter 3.4s ease 1.2s}
+.inqi.is-logo .inqi-sub{opacity:.92;filter:none}
+
+.inqi-form{width:100%;opacity:0;transform:translateY(14px);visibility:hidden;
+  transition:opacity 1.2s ease,transform 1.2s cubic-bezier(.2,.7,.2,1),visibility 0s linear 1.2s;
+  background:linear-gradient(180deg,rgba(15,22,36,.78),rgba(8,12,20,.82));border:1px solid var(--line-2);border-top-color:var(--frame);
+  clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:18px 22px 16px}
+.inqi.is-form .inqi-form{opacity:1;transform:none;visibility:visible;transition-delay:0s}
+.inqi-tabs{display:flex;gap:18px;margin:0 0 14px;border-bottom:1px solid var(--line)}
+.inqi-tab{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:2px 0 8px;cursor:pointer;
+  font:600 12px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.inqi-tab:hover{color:var(--text)}
+.inqi-tab[aria-selected="true"]{color:var(--frame);border-bottom-color:var(--frame)}
+.inqi-field{display:block;margin:0 0 12px}
+.inqi-field>span{display:block;font:600 11px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.inqi-field input{width:100%;background:rgba(7,10,16,.85);color:var(--text);border:1px solid var(--line-2);border-radius:2px;
+  padding:9px 11px;font:400 15px/1.3 var(--sans);transition:border-color .15s,box-shadow .15s}
+.inqi-field input:hover{border-color:var(--faint)}
+.inqi-field input:focus{outline:none;border-color:var(--frame);box-shadow:0 0 0 1px var(--frame),0 0 14px var(--glow)}
+.inqi-field input[aria-invalid="true"]{border-color:var(--red)}
+.inqi-check{display:flex;align-items:center;gap:8px;margin:2px 0 14px;font:500 13px/1 var(--sans);color:var(--muted);cursor:pointer}
+.inqi-check input{accent-color:var(--frame);width:15px;height:15px;margin:0}
+.inqi-go{width:100%;cursor:pointer;padding:11px 14px;border:1px solid var(--frame);color:var(--frame);background:color-mix(in srgb,var(--frame) 10%,transparent);
+  font:600 13px/1 var(--ui);letter-spacing:.24em;text-transform:uppercase;border-radius:2px;transition:background .15s,box-shadow .15s,color .15s}
+.inqi-go:hover:not(:disabled){background:color-mix(in srgb,var(--frame) 20%,transparent);box-shadow:0 0 18px var(--glow);color:#fff}
+.inqi-go:disabled{opacity:.55;cursor:progress}
+.inqi-msg{min-height:20px;margin:10px 0 0;font:500 13px/1.4 var(--sans);color:var(--red)}
+.inqi-msg.ok{color:var(--green)}
+.inqi-note{margin:6px 0 0;font:400 12px/1.45 var(--sans);color:var(--faint)}
+.inqi-skip{position:absolute;right:18px;bottom:16px;background:none;border:0;cursor:pointer;color:var(--faint);
+  font:600 11px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;padding:6px;transition:opacity .6s}
+.inqi-skip:hover{color:var(--text)}
+.inqi.is-form .inqi-skip{opacity:0;pointer-events:none}
+.inqi.is-fast .inqi-world,.inqi.is-fast .inqi-logo,.inqi.is-fast .inqi-sub,.inqi.is-fast .inqi-form{transition-duration:.01s!important;transition-delay:0s!important}
+
+/* signed-in chip in the top bar */
+.whoami{background:none;border:1px solid var(--line-2);color:var(--muted);cursor:pointer;padding:4px 10px;border-radius:2px;
+  font:600 11px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.whoami:hover{color:var(--text);border-color:var(--frame)}
+
+@media (max-height:640px){.inqi-logo{height:26vh}.inqi-sub{margin-top:4px}.inqi-form{padding:12px 18px 12px}.inqi-field{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){
+  .inqi-world{animation:none}
+  .inqi-world,.inqi-logo,.inqi-sub,.inqi-form{transition-duration:.01s!important;transition-delay:0s!important}
+  .inqi-logo{filter:none;transform:none}
+}
+
+/* sign-in footer links (Settings, EULA) and the social corner */
+.inqi-links{display:flex;justify-content:space-between;gap:12px;margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line)}
+.inqi-lnk{background:none;border:0;padding:2px 0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+  font:600 11px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.inqi-lnk:hover{color:var(--frame)}
+.inqi-lnk svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.inqi-note .inqi-lnk{font:inherit;letter-spacing:0;text-transform:none;color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.inqi-corner{position:absolute;left:18px;bottom:16px;display:flex;gap:8px;opacity:0;transition:opacity 1.2s ease .3s}
+.inqi.is-form .inqi-corner{opacity:1}
+.inqi-soc{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--muted);background:rgba(7,10,16,.55);
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));transition:color .15s,border-color .15s,box-shadow .15s}
+a.inqi-soc:hover{color:#fff;border-color:var(--frame);box-shadow:0 0 14px var(--glow)}
+.inqi-soc svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.inqi-soc.off{opacity:.38;cursor:default}
+@media (max-width:520px){.inqi-corner{left:12px;bottom:10px}.inqi-soc{width:30px;height:30px}}
+
+/* unlock moment after sign-in (intro.js unlock()) */
+.inqi-form{position:relative}
+.inqi-form>*:not(.inqi-unlock){transition:opacity .45s ease}
+.inqi-form.is-unlocking>*:not(.inqi-unlock){opacity:0;pointer-events:none}
+.inqi-unlock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;pointer-events:none;opacity:0;visibility:hidden}
+.inqi-form.is-unlocking .inqi-unlock{opacity:1;visibility:visible;transition:opacity .45s ease .3s}
+.inqi-lock{width:104px;height:auto;overflow:visible;transform:scale(.9);opacity:0;transition:transform .55s cubic-bezier(.2,.8,.2,1) .3s,opacity .45s ease .3s}
+.inqi-form.is-unlocking .inqi-lock{transform:none;opacity:1}
+.inqi-ring{fill:none;stroke:var(--frame);stroke-width:1.5;opacity:0;transform-origin:60px 84px;transform:scale(.7)}
+.inqi-shackle{fill:none;stroke:url(#inqi-lk);stroke-width:9;stroke-linecap:round;transform-origin:86px 66px}
+.inqi-body{fill:url(#inqi-lk);stroke:rgba(255,255,255,.5);stroke-width:1}
+.inqi-hole{fill:#0A1220;transition:fill .4s ease}
+.inqi-glint{stroke:rgba(255,255,255,.8);stroke-width:1.5;stroke-linecap:round;opacity:.5}
+/* the key turns (small shake), then the shackle springs up and swings open */
+.inqi-form.is-unlocking .inqi-lock{animation:inqi-turn .3s ease-in-out .85s 1}
+.inqi-form.is-open .inqi-shackle{animation:inqi-open .55s cubic-bezier(.3,1.5,.5,1) forwards}
+.inqi-form.is-open .inqi-hole{fill:var(--frame)}
+.inqi-form.is-open .inqi-ring{animation:inqi-ring .9s ease-out forwards}
+.inqi-form.is-open .inqi-lock{filter:drop-shadow(0 0 14px var(--glow))}
+@keyframes inqi-turn{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+@keyframes inqi-open{0%{transform:none}55%{transform:translateY(-16px)}100%{transform:translateY(-14px) rotate(28deg)}}
+@keyframes inqi-ring{0%{opacity:.9;transform:scale(.7)}100%{opacity:0;transform:scale(1.35)}}
+.inqi-welcome{margin:0;font:400 24px/1.2 var(--math);color:var(--text);opacity:0;transform:translateY(6px);transition:opacity .6s ease,transform .6s ease;text-align:center;padding:0 12px}
+.inqi-welcome b{font-weight:600;color:#fff;text-shadow:0 0 14px var(--glow)}
+.inqi-form.is-open .inqi-welcome{opacity:1;transform:none;transition-delay:.15s}
+.inqi-msg.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);margin:0}
+@media (prefers-reduced-motion:reduce){.inqi-form.is-open .inqi-shackle{animation:none;transform:translateY(-14px) rotate(28deg)}.inqi-form.is-unlocking .inqi-lock{animation:none}}
+:root[data-reduce-motion] .inqi-form.is-open .inqi-shackle{animation:none;transform:translateY(-14px) rotate(28deg)}
